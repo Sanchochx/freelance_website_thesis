@@ -14,8 +14,8 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision: str = "0002_add_verification_token_expires_to_users"
-down_revision: Union[str, None] = "0001_add_empresa_to_users"
+revision: str = "0002_add_verif_expires"
+down_revision: Union[str, None] = "0001_add_empresa"
 branch_labels: Union[str, Sequence[str], None] = None
 depends_on: Union[str, Sequence[str], None] = None
 

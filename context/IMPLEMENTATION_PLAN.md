@@ -7,12 +7,12 @@
 │  PROGRESO GLOBAL DEL PROYECTO                               │
 ├─────────────────────────────────────────────────────────────┤
 │  Total Historias de Usuario:     50                         │
-│  ✅ Completadas:                   4                       │
+│  ✅ Completadas:                   5                       │
 │  🔄 Parcialmente Completadas:     0                         │
 │  ⏳ En Progreso:                   0                         │
-│  ⏸️  Pendientes:                   46                        │
+│  ⏸️  Pendientes:                   45                        │
 │                                                             │
-│  Progreso: [████░░░░░░░░░░░░░░░░░░] 8% (4/50)              │
+│  Progreso: [█████░░░░░░░░░░░░░░░░░] 10% (5/50)             │
 └─────────────────────────────────────────────────────────────┘
 ```
 
@@ -26,7 +26,7 @@
 
 | Epic | Nombre | US | SP | ✅ | 🔄 | ⏳ |
 |------|--------|----|----|----|----|-----|
-| EPIC_01 | Autenticación y Perfiles | 8 | 28 | 4 | 0 | 4 |
+| EPIC_01 | Autenticación y Perfiles | 8 | 28 | 5 | 0 | 3 |
 | EPIC_02 | Catálogo de Servicios | 6 | 19 | 0 | 0 | 6 |
 | EPIC_03 | Sistema de Pedidos | 6 | 24 | 0 | 0 | 6 |
 | EPIC_04 | Mensajería Interna | 5 | 20 | 0 | 0 | 5 |
@@ -35,7 +35,7 @@
 | EPIC_07 | Búsqueda y Filtros | 4 | 14 | 0 | 0 | 4 |
 | EPIC_08 | Dashboard y Analítica | 5 | 21 | 0 | 0 | 5 |
 | EPIC_09 | Notificaciones | 5 | 19 | 0 | 0 | 5 |
-| **TOTAL** | | **50** | **186** | **4** | **0** | **46** |
+| **TOTAL** | | **50** | **186** | **5** | **0** | **45** |
 
 ---
 
@@ -75,13 +75,13 @@
 - **Criterios de Aceptación:** 7 ✅
 - **Fecha de completación:** 2026-03-05
 
-#### [ ] US-005: Perfil de freelancer
+#### [x] US-005: Perfil de freelancer
 - **Archivo:** `context/USER_STORIES/EPIC_01_Autenticacion_y_Perfiles/US-005_perfil_freelancer.md`
 - **Prioridad:** ALTA
 - **Estimación:** 3 pts
-- **Estado:** ⏳ Pendiente
-- **Criterios de Aceptación:** 7 ⏳
-- **Fecha de completación:** —
+- **Estado:** ✅ Completada
+- **Criterios de Aceptación:** 7 ✅
+- **Fecha de completación:** 2026-03-05
 
 #### [ ] US-006: Perfil de cliente
 - **Archivo:** `context/USER_STORIES/EPIC_01_Autenticacion_y_Perfiles/US-006_perfil_cliente.md`

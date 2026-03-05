@@ -8,13 +8,13 @@
 
 ## Criterios de Aceptación
 
-- [ ] **CA1:** El perfil muestra: foto de perfil, nombre, carrera, semestre, bio, habilidades (lista de tags), portafolio (imágenes/links) y calificación promedio con número de reseñas.
-- [ ] **CA2:** El perfil es visible públicamente para cualquier usuario (autenticado o no).
-- [ ] **CA3:** Los servicios activos del freelancer se listan en su perfil.
-- [ ] **CA4:** Las reseñas recibidas se muestran en el perfil con nombre del cliente, calificación y comentario.
-- [ ] **CA5:** Los badges obtenidos (Top Freelancer, Entrega Rápida, Alta Calidad) se muestran destacados.
-- [ ] **CA6:** Si el freelancer no tiene reseñas aún, se muestra "Sin calificaciones todavía".
-- [ ] **CA7:** La calificación promedio se actualiza automáticamente al recibir nuevas reseñas.
+- [x] **CA1:** El perfil muestra: foto de perfil, nombre, carrera, semestre, bio, habilidades (lista de tags), portafolio (imágenes/links) y calificación promedio con número de reseñas.
+- [x] **CA2:** El perfil es visible públicamente para cualquier usuario (autenticado o no).
+- [x] **CA3:** Los servicios activos del freelancer se listan en su perfil.
+- [x] **CA4:** Las reseñas recibidas se muestran en el perfil con nombre del cliente, calificación y comentario.
+- [x] **CA5:** Los badges obtenidos (Top Freelancer, Entrega Rápida, Alta Calidad) se muestran destacados.
+- [x] **CA6:** Si el freelancer no tiene reseñas aún, se muestra "Sin calificaciones todavía".
+- [x] **CA7:** La calificación promedio se actualiza automáticamente al recibir nuevas reseñas.
 
 ## Notas Técnicas
 

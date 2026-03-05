@@ -1,4 +1,5 @@
 from sqlalchemy import ARRAY, Boolean, Column, DateTime, Integer, Numeric, String, Text
+from sqlalchemy.orm import relationship
 from sqlalchemy.sql import func
 
 from app.database import Base
@@ -18,8 +19,14 @@ class User(Base):
     avatar_url = Column(String(255), nullable=True)
     bio = Column(Text, nullable=True)
     habilidades = Column(ARRAY(String), nullable=True)
+    portafolio = Column(ARRAY(String), nullable=True)
+    badges = Column(ARRAY(String), nullable=True)
     wallet_balance = Column(Numeric(12, 2), default=0)
     verificado = Column(Boolean, default=False)
     verification_token = Column(String(255), nullable=True)
     verification_token_expires = Column(DateTime(timezone=True), nullable=True)
     fecha_registro = Column(DateTime(timezone=True), server_default=func.now())
+
+    services = relationship("Service", back_populates="freelancer")
+    reviews_received = relationship("Review", foreign_keys="Review.reviewed_id", back_populates="reviewed")
+    reviews_given = relationship("Review", foreign_keys="Review.reviewer_id", back_populates="reviewer")

@@ -1,5 +1,5 @@
 import re
-from typing import Optional
+from typing import List, Optional
 
 from pydantic import BaseModel, EmailStr, Field, field_validator
 
@@ -100,3 +100,50 @@ class ResendVerificationRequest(BaseModel):
     """Schema for resend-verification endpoint — CA6."""
 
     email: EmailStr
+
+
+class ServiceSummary(BaseModel):
+    """Public summary of a freelancer's active service."""
+
+    id: int
+    titulo: str
+    descripcion: Optional[str] = None
+    precio_basico: Optional[float] = None
+    precio_estandar: Optional[float] = None
+    precio_premium: Optional[float] = None
+    tiempo_entrega: Optional[int] = None
+    imagenes: Optional[List[str]] = None
+    categoria_id: Optional[int] = None
+
+    model_config = {"from_attributes": True}
+
+
+class ReviewSummary(BaseModel):
+    """Public summary of a review left on a freelancer."""
+
+    id: int
+    reviewer_nombre: str
+    rating: float
+    comentario: Optional[str] = None
+    fecha: str  # ISO-8601
+
+
+class FreelancerProfileResponse(BaseModel):
+    """Full public profile for a freelancer — US-005."""
+
+    id: int
+    nombre: str
+    email: str
+    carrera: Optional[str] = None
+    semestre: Optional[int] = None
+    avatar_url: Optional[str] = None
+    bio: Optional[str] = None
+    habilidades: Optional[List[str]] = None
+    portafolio: Optional[List[str]] = None
+    badges: Optional[List[str]] = None
+    verificado: bool
+    fecha_registro: str  # ISO-8601
+    avg_rating: Optional[float] = None  # None when no reviews (CA6)
+    total_reviews: int
+    services: List[ServiceSummary]
+    reviews: List[ReviewSummary]
