@@ -25,6 +25,8 @@ class User(Base):
     verificado = Column(Boolean, default=False)
     verification_token = Column(String(255), nullable=True)
     verification_token_expires = Column(DateTime(timezone=True), nullable=True)
+    reset_token = Column(String(255), nullable=True)
+    reset_token_expires = Column(DateTime(timezone=True), nullable=True)
     fecha_registro = Column(DateTime(timezone=True), server_default=func.now())
 
     services = relationship("Service", back_populates="freelancer")

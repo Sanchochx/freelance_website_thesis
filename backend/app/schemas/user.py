@@ -198,3 +198,29 @@ class ProfileUpdateResponse(BaseModel):
     success: bool = True
     message: str = "Perfil actualizado correctamente"
     data: UserResponse
+
+
+# ── US-008: Password recovery schemas ────────────────────────────────────────
+
+class ForgotPasswordRequest(BaseModel):
+    """Schema for forgot-password request — CA2."""
+
+    email: EmailStr
+
+
+class ResetPasswordRequest(BaseModel):
+    """Schema for reset-password request — CA5, CA6."""
+
+    token: str
+    new_password: str = Field(..., min_length=8)
+
+    @field_validator("new_password")
+    @classmethod
+    def validate_password_strength(cls, v: str) -> str:
+        """CA6: at least 8 chars, one uppercase, one digit."""
+        if not PASSWORD_REGEX.match(v):
+            raise ValueError(
+                "La contraseña debe tener mínimo 8 caracteres, "
+                "al menos una mayúscula y un número"
+            )
+        return v

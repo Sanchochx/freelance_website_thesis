@@ -49,3 +49,36 @@ async def send_verification_email(email: str, nombre: str, token: str) -> None:
     )
 
     await fast_mail.send_message(message)
+
+
+async def send_reset_password_email(email: str, nombre: str, token: str) -> None:
+    """
+    CA2: Send password-reset email with a one-time link valid for 1 hour (CA4).
+    """
+    reset_url = f"{settings.FRONTEND_URL}/reset-password?token={token}"
+
+    html_body = f"""
+    <h2>Hola, {nombre}!</h2>
+    <p>Recibimos una solicitud para restablecer la contraseña de tu cuenta en <strong>FreelanceUSTA</strong>.</p>
+    <p>Haz clic en el siguiente enlace para crear una nueva contraseña:</p>
+    <p>
+      <a href="{reset_url}" style="
+        display:inline-block;padding:12px 24px;background:#4F46E5;
+        color:#fff;text-decoration:none;border-radius:6px;
+      ">
+        Restablecer contraseña
+      </a>
+    </p>
+    <p>Si no solicitaste este cambio, ignora este correo. Tu contraseña no será modificada.</p>
+    <hr/>
+    <small>Este enlace es de un solo uso y expira en 1 hora.</small>
+    """
+
+    message = MessageSchema(
+        subject="Restablece tu contraseña en FreelanceUSTA",
+        recipients=[email],
+        body=html_body,
+        subtype=MessageType.html,
+    )
+
+    await fast_mail.send_message(message)

@@ -7,12 +7,12 @@
 │  PROGRESO GLOBAL DEL PROYECTO                               │
 ├─────────────────────────────────────────────────────────────┤
 │  Total Historias de Usuario:     50                         │
-│  ✅ Completadas:                   7                       │
+│  ✅ Completadas:                   8                       │
 │  🔄 Parcialmente Completadas:     0                         │
 │  ⏳ En Progreso:                   0                         │
-│  ⏸️  Pendientes:                   43                        │
+│  ⏸️  Pendientes:                   42                        │
 │                                                             │
-│  Progreso: [███████░░░░░░░░░░░░░░░] 14% (7/50)             │
+│  Progreso: [████████░░░░░░░░░░░░░░] 16% (8/50)             │
 └─────────────────────────────────────────────────────────────┘
 ```
 
@@ -26,7 +26,7 @@
 
 | Epic | Nombre | US | SP | ✅ | 🔄 | ⏳ |
 |------|--------|----|----|----|----|-----|
-| EPIC_01 | Autenticación y Perfiles | 8 | 28 | 7 | 0 | 1 |
+| EPIC_01 | Autenticación y Perfiles | 8 | 28 | 8 | 0 | 0 |
 | EPIC_02 | Catálogo de Servicios | 6 | 19 | 0 | 0 | 6 |
 | EPIC_03 | Sistema de Pedidos | 6 | 24 | 0 | 0 | 6 |
 | EPIC_04 | Mensajería Interna | 5 | 20 | 0 | 0 | 5 |
@@ -35,7 +35,7 @@
 | EPIC_07 | Búsqueda y Filtros | 4 | 14 | 0 | 0 | 4 |
 | EPIC_08 | Dashboard y Analítica | 5 | 21 | 0 | 0 | 5 |
 | EPIC_09 | Notificaciones | 5 | 19 | 0 | 0 | 5 |
-| **TOTAL** | | **50** | **186** | **7** | **0** | **43** |
+| **TOTAL** | | **50** | **186** | **8** | **0** | **42** |
 
 ---
 
@@ -99,13 +99,13 @@
 - **Criterios de Aceptación:** 7 ✅
 - **Fecha de completación:** 2026-03-05
 
-#### [ ] US-008: Recuperación de contraseña
+#### [x] US-008: Recuperación de contraseña
 - **Archivo:** `context/USER_STORIES/EPIC_01_Autenticacion_y_Perfiles/US-008_recuperacion_de_contrasena.md`
 - **Prioridad:** ALTA
 - **Estimación:** 5 pts
-- **Estado:** ⏳ Pendiente
-- **Criterios de Aceptación:** 8 ⏳
-- **Fecha de completación:** —
+- **Estado:** ✅ Completada
+- **Criterios de Aceptación:** 8 ✅
+- **Fecha de completación:** 2026-03-05
 
 ---
 

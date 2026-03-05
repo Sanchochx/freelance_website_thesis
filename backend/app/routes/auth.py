@@ -4,14 +4,16 @@ from sqlalchemy.orm import Session
 from app.database import get_db
 from app.schemas.user import (
     ClientRegisterRequest,
+    ForgotPasswordRequest,
     FreelancerRegisterRequest,
     LoginRequest,
     LoginResponse,
     ResendVerificationRequest,
+    ResetPasswordRequest,
     UserResponse,
 )
 from app.services import auth_service
-from app.utils.email import send_verification_email
+from app.utils.email import send_reset_password_email, send_verification_email
 
 router = APIRouter(prefix="/auth", tags=["auth"])
 
@@ -134,6 +136,59 @@ def verify_email(token: str, db: Session = Depends(get_db)):
     """
     auth_service.verify_email_token(db, token)
     return {"success": True, "message": "Cuenta verificada correctamente. Ya puedes iniciar sesión."}
+
+
+@router.post(
+    "/forgot-password",
+    status_code=status.HTTP_200_OK,
+    summary="Solicitud de restablecimiento de contraseña",
+)
+async def forgot_password(
+    data: ForgotPasswordRequest,
+    background_tasks: BackgroundTasks,
+    db: Session = Depends(get_db),
+):
+    """
+    Solicita el restablecimiento de contraseña.
+
+    - CA2: envía un email con enlace de restablecimiento si el correo está registrado
+    - CA3: siempre devuelve el mismo mensaje de éxito (no revela si el correo existe)
+    - CA4: el token expira en 1 hora
+    """
+    result = auth_service.forgot_password(db, data)
+
+    if result is not None:
+        token, nombre = result
+        background_tasks.add_task(
+            send_reset_password_email,
+            email=data.email,
+            nombre=nombre,
+            token=token,
+        )
+
+    # CA3 — always respond with success
+    return {
+        "success": True,
+        "message": "Si ese correo está registrado, recibirás un enlace para restablecer tu contraseña.",
+    }
+
+
+@router.post(
+    "/reset-password",
+    status_code=status.HTTP_200_OK,
+    summary="Restablecimiento de contraseña",
+)
+def reset_password(data: ResetPasswordRequest, db: Session = Depends(get_db)):
+    """
+    Restablece la contraseña usando el token de un solo uso.
+
+    - CA5: acepta token + nueva contraseña
+    - CA6: valida complejidad de contraseña (mínimo 8 caracteres, mayúscula, número)
+    - CA7: el token queda invalidado tras el uso
+    - CA8: devuelve mensaje de éxito para que el frontend redirija al login
+    """
+    auth_service.reset_password(db, data)
+    return {"success": True, "message": "Contraseña restablecida correctamente. Ya puedes iniciar sesión."}
 
 
 @router.post(

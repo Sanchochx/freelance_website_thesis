@@ -6,7 +6,14 @@ from passlib.context import CryptContext
 from sqlalchemy.orm import Session
 
 from app.models.user import User
-from app.schemas.user import ClientRegisterRequest, FreelancerRegisterRequest, LoginRequest, ResendVerificationRequest
+from app.schemas.user import (
+    ClientRegisterRequest,
+    ForgotPasswordRequest,
+    FreelancerRegisterRequest,
+    LoginRequest,
+    ResendVerificationRequest,
+    ResetPasswordRequest,
+)
 from app.utils.jwt import create_access_token
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
@@ -23,6 +30,7 @@ def verify_password(plain: str, hashed: str) -> bool:
 
 
 VERIFICATION_TOKEN_TTL_HOURS = 24
+RESET_TOKEN_TTL_HOURS = 1
 
 
 def generate_verification_token() -> tuple[str, datetime]:
@@ -169,6 +177,61 @@ def verify_email_token(db: Session, token: str) -> None:
     user.verificado = True
     user.verification_token = None
     user.verification_token_expires = None
+    db.commit()
+
+
+def forgot_password(db: Session, data: ForgotPasswordRequest) -> tuple[str, str] | None:
+    """
+    Generate a password-reset token for the given email if the account exists.
+
+    - CA3: always returns the same success message regardless of whether the email exists;
+      returns (token, nombre) when found so the caller can send the email, None otherwise.
+    - CA4: token expires in 1 hour.
+    """
+    user = db.query(User).filter(User.email == data.email).first()
+
+    if not user:
+        # CA3 — do not reveal whether the email is registered
+        return None
+
+    token = secrets.token_urlsafe(32)
+    expires = datetime.now(timezone.utc) + timedelta(hours=RESET_TOKEN_TTL_HOURS)
+
+    user.reset_token = token
+    user.reset_token_expires = expires
+    db.commit()
+
+    return token, user.nombre
+
+
+def reset_password(db: Session, data: ResetPasswordRequest) -> None:
+    """
+    Reset the user's password using the one-time reset token.
+
+    - CA5: accepts token + new_password; sets new hashed password.
+    - CA6: password complexity validated in schema.
+    - CA7: token is invalidated after use.
+    - Raises 400 if token is invalid or expired.
+    """
+    user = db.query(User).filter(User.reset_token == data.token).first()
+
+    if not user:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="El enlace de restablecimiento no es válido o ya fue utilizado.",
+        )
+
+    if user.reset_token_expires is None or datetime.now(timezone.utc) > user.reset_token_expires:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="El enlace de restablecimiento ha expirado. Solicita uno nuevo.",
+        )
+
+    # CA5 — update password hash
+    user.password_hash = hash_password(data.new_password)
+    # CA7 — invalidate token
+    user.reset_token = None
+    user.reset_token_expires = None
     db.commit()
 
 
