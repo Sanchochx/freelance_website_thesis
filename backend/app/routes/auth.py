@@ -7,6 +7,7 @@ from app.schemas.user import (
     FreelancerRegisterRequest,
     LoginRequest,
     LoginResponse,
+    ResendVerificationRequest,
     UserResponse,
 )
 from app.services import auth_service
@@ -116,3 +117,47 @@ async def register_client(
     )
 
     return user
+
+
+@router.get(
+    "/verify-email/{token}",
+    status_code=status.HTTP_200_OK,
+    summary="Verificación de correo electrónico",
+)
+def verify_email(token: str, db: Session = Depends(get_db)):
+    """
+    Verifica la cuenta usando el token de un solo uso enviado por email.
+
+    - CA3: activa la cuenta (verificado=True) y elimina el token
+    - CA4: retorna mensaje de éxito; el frontend redirige al login
+    - CA5: retorna 400 si el token no existe, ya fue usado o expiró
+    """
+    auth_service.verify_email_token(db, token)
+    return {"success": True, "message": "Cuenta verificada correctamente. Ya puedes iniciar sesión."}
+
+
+@router.post(
+    "/resend-verification",
+    status_code=status.HTTP_200_OK,
+    summary="Reenvío del email de verificación",
+)
+async def resend_verification(
+    data: ResendVerificationRequest,
+    background_tasks: BackgroundTasks,
+    db: Session = Depends(get_db),
+):
+    """
+    Genera un nuevo token de verificación y reenvía el email.
+
+    - CA6: disponible para cuentas no verificadas; genera nuevo token con expiración
+    """
+    user = auth_service.resend_verification(db, data)
+
+    background_tasks.add_task(
+        send_verification_email,
+        email=user.email,
+        nombre=user.nombre,
+        token=user.verification_token,
+    )
+
+    return {"success": True, "message": "Email de verificación reenviado. Revisa tu bandeja de entrada."}

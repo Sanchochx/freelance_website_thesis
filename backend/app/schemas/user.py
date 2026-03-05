@@ -94,3 +94,9 @@ class LoginResponse(BaseModel):
     access_token: str
     token_type: str = "bearer"
     user: UserResponse
+
+
+class ResendVerificationRequest(BaseModel):
+    """Schema for resend-verification endpoint — CA6."""
+
+    email: EmailStr

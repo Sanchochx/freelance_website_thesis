@@ -54,3 +54,23 @@ def require_role(*roles: str):
             )
         return current_user
     return role_checker
+
+
+def require_verified_freelancer(current_user: User = Depends(get_current_user)) -> User:
+    """
+    Dependency that ensures the current user is a verified freelancer.
+
+    US-004 CA7: an unverified freelancer cannot publish services.
+    Usage: add `current_user: User = Depends(require_verified_freelancer)` to service-creation endpoints.
+    """
+    if current_user.rol != "freelancer":
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Solo los freelancers pueden realizar esta acción",
+        )
+    if not current_user.verificado:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Debes verificar tu correo electrónico antes de publicar servicios",
+        )
+    return current_user

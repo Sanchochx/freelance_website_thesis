@@ -1,11 +1,12 @@
 import secrets
+from datetime import datetime, timedelta, timezone
 
 from fastapi import HTTPException, status
 from passlib.context import CryptContext
 from sqlalchemy.orm import Session
 
 from app.models.user import User
-from app.schemas.user import ClientRegisterRequest, FreelancerRegisterRequest, LoginRequest
+from app.schemas.user import ClientRegisterRequest, FreelancerRegisterRequest, LoginRequest, ResendVerificationRequest
 from app.utils.jwt import create_access_token
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
@@ -21,9 +22,14 @@ def verify_password(plain: str, hashed: str) -> bool:
     return pwd_context.verify(plain, hashed)
 
 
-def generate_verification_token() -> str:
-    """Generate a secure random token for email verification."""
-    return secrets.token_urlsafe(32)
+VERIFICATION_TOKEN_TTL_HOURS = 24
+
+
+def generate_verification_token() -> tuple[str, datetime]:
+    """Generate a secure random token and its expiry (now + 24 h) for email verification."""
+    token = secrets.token_urlsafe(32)
+    expires = datetime.now(timezone.utc) + timedelta(hours=VERIFICATION_TOKEN_TTL_HOURS)
+    return token, expires
 
 
 def register_freelancer(db: Session, data: FreelancerRegisterRequest) -> User:
@@ -43,7 +49,7 @@ def register_freelancer(db: Session, data: FreelancerRegisterRequest) -> User:
             detail="Ya existe una cuenta registrada con ese correo electrónico",
         )
 
-    verification_token = generate_verification_token()
+    verification_token, token_expires = generate_verification_token()
 
     user = User(
         nombre=data.nombre,
@@ -54,6 +60,7 @@ def register_freelancer(db: Session, data: FreelancerRegisterRequest) -> User:
         semestre=data.semestre,
         verificado=False,  # CA5
         verification_token=verification_token,
+        verification_token_expires=token_expires,  # CA2
     )
 
     db.add(user)
@@ -115,7 +122,7 @@ def register_client(db: Session, data: ClientRegisterRequest) -> User:
             detail="Ya existe una cuenta registrada con ese correo electrónico",
         )
 
-    verification_token = generate_verification_token()
+    verification_token, token_expires = generate_verification_token()
 
     user = User(
         nombre=data.nombre,
@@ -125,9 +132,71 @@ def register_client(db: Session, data: ClientRegisterRequest) -> User:
         empresa=data.empresa,
         verificado=False,  # CA5
         verification_token=verification_token,
+        verification_token_expires=token_expires,  # CA2
     )
 
     db.add(user)
+    db.commit()
+    db.refresh(user)
+
+    return user
+
+
+def verify_email_token(db: Session, token: str) -> None:
+    """
+    Verify the account using a one-time email token.
+
+    - CA3: sets verificado=True and clears the token on success
+    - CA5: raises 400 if token is not found, already used, or expired
+    """
+    user = db.query(User).filter(User.verification_token == token).first()
+
+    # CA5 — token not found or already consumed
+    if not user:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="El enlace de verificación no es válido o ya fue utilizado.",
+        )
+
+    # CA2 / CA5 — token expired
+    if user.verification_token_expires is None or datetime.now(timezone.utc) > user.verification_token_expires:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="El enlace de verificación ha expirado. Solicita uno nuevo.",
+        )
+
+    # CA3 — activate account and invalidate token
+    user.verificado = True
+    user.verification_token = None
+    user.verification_token_expires = None
+    db.commit()
+
+
+def resend_verification(db: Session, data: ResendVerificationRequest) -> User:
+    """
+    Issue a new verification token for an unverified account.
+
+    - CA6: generates a fresh token + expiry and returns the user so the
+      caller can dispatch the email in a background task.
+    - Raises 404 if email not found; raises 400 if already verified.
+    """
+    user = db.query(User).filter(User.email == data.email).first()
+
+    if not user:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="No existe una cuenta registrada con ese correo electrónico.",
+        )
+
+    if user.verificado:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Esta cuenta ya está verificada.",
+        )
+
+    verification_token, token_expires = generate_verification_token()
+    user.verification_token = verification_token
+    user.verification_token_expires = token_expires
     db.commit()
     db.refresh(user)
 

@@ -8,13 +8,13 @@
 
 ## Criterios de Aceptación
 
-- [ ] **CA1:** Tras el registro, el sistema envía automáticamente un email con un enlace de verificación único.
-- [ ] **CA2:** El enlace de verificación tiene una validez de 24 horas; transcurrido ese tiempo expira.
-- [ ] **CA3:** Al hacer clic en el enlace, la cuenta cambia a estado `verificado = true`.
-- [ ] **CA4:** Tras verificar, el usuario es redirigido a la página de login con un mensaje de éxito.
-- [ ] **CA5:** Si el enlace ya fue usado o expiró, el sistema muestra un mensaje de error y ofrece reenviar el email.
-- [ ] **CA6:** El usuario puede solicitar el reenvío del email de verificación desde la pantalla de login.
-- [ ] **CA7:** Un freelancer con cuenta no verificada no puede publicar servicios.
+- [x] **CA1:** Tras el registro, el sistema envía automáticamente un email con un enlace de verificación único.
+- [x] **CA2:** El enlace de verificación tiene una validez de 24 horas; transcurrido ese tiempo expira.
+- [x] **CA3:** Al hacer clic en el enlace, la cuenta cambia a estado `verificado = true`.
+- [x] **CA4:** Tras verificar, el usuario es redirigido a la página de login con un mensaje de éxito.
+- [x] **CA5:** Si el enlace ya fue usado o expiró, el sistema muestra un mensaje de error y ofrece reenviar el email.
+- [x] **CA6:** El usuario puede solicitar el reenvío del email de verificación desde la pantalla de login.
+- [x] **CA7:** Un freelancer con cuenta no verificada no puede publicar servicios.
 
 ## Notas Técnicas
 

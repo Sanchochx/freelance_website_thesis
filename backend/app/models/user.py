@@ -21,4 +21,5 @@ class User(Base):
     wallet_balance = Column(Numeric(12, 2), default=0)
     verificado = Column(Boolean, default=False)
     verification_token = Column(String(255), nullable=True)
+    verification_token_expires = Column(DateTime(timezone=True), nullable=True)
     fecha_registro = Column(DateTime(timezone=True), server_default=func.now())
