@@ -1,4 +1,4 @@
-from typing import List, Optional
+from typing import List, Literal, Optional
 
 from pydantic import BaseModel
 
@@ -30,3 +30,9 @@ class ServiceResponse(BaseModel):
     fecha_creacion: str  # ISO-8601
 
     model_config = {"from_attributes": True}
+
+
+class ServiceStatusUpdateRequest(BaseModel):
+    """Body for PATCH /services/{id}/status — CA1, CA3."""
+
+    estado: Literal["activo", "pausado"]

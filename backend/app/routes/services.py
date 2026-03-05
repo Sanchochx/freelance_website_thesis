@@ -6,7 +6,7 @@ from sqlalchemy.orm import Session
 from app.database import get_db
 from app.middleware.auth import get_current_user, require_verified_freelancer
 from app.models.user import User
-from app.schemas.service import ServiceResponse
+from app.schemas.service import ServiceResponse, ServiceStatusUpdateRequest
 from app.services import service_service
 from app.utils.cloudinary import upload_service_image
 
@@ -125,6 +125,58 @@ async def update_service(
     )
 
     return _build_response(service)
+
+
+@router.patch(
+    "/{service_id}/status",
+    response_model=ServiceResponse,
+    status_code=status.HTTP_200_OK,
+    summary="Pausar o reactivar un servicio",
+)
+def update_service_status(
+    service_id: int,
+    data: ServiceStatusUpdateRequest,
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_db),
+):
+    """
+    Cambia el estado de un servicio a 'pausado' o 'activo'.
+
+    - CA1: pausar oculta el servicio del catálogo público
+    - CA3: reactivar lo vuelve visible de inmediato
+    """
+    service = service_service.update_service_status(
+        db=db,
+        service_id=service_id,
+        current_user_id=current_user.id,
+        nuevo_estado=data.estado,
+    )
+    return _build_response(service)
+
+
+@router.delete(
+    "/{service_id}",
+    status_code=status.HTTP_200_OK,
+    summary="Eliminar un servicio",
+)
+def delete_service(
+    service_id: int,
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_db),
+):
+    """
+    Elimina lógicamente un servicio (estado='eliminado').
+
+    - CA4: solo permitido si no hay pedidos activos
+    - CA5: error 400 con mensaje si hay pedidos en progreso
+    - CA6: los pedidos históricos se conservan en la BD
+    """
+    service_service.delete_service(
+        db=db,
+        service_id=service_id,
+        current_user_id=current_user.id,
+    )
+    return {"success": True, "message": "Servicio eliminado correctamente."}
 
 
 def _build_response(service) -> ServiceResponse:

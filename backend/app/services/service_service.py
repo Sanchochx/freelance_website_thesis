@@ -72,6 +72,70 @@ def create_service(
     return service
 
 
+def update_service_status(db: Session, service_id: int, current_user_id: int, nuevo_estado: str) -> Service:
+    """
+    Pause or reactivate a service owned by current_user_id.
+
+    - CA1: sets estado='pausado' (service hidden from catalog).
+    - CA3: sets estado='activo' (service visible again).
+    """
+    service = db.query(Service).filter(Service.id == service_id).first()
+    if not service:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Servicio no encontrado.")
+
+    if service.user_id != current_user_id:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="No tienes permisos para modificar este servicio.",
+        )
+
+    service.estado = nuevo_estado
+    db.commit()
+    db.refresh(service)
+    return service
+
+
+def delete_service(db: Session, service_id: int, current_user_id: int) -> None:
+    """
+    Soft-delete a service by setting estado='eliminado'.
+
+    - CA4: allowed only when no active orders exist.
+    - CA5: raises 400 with explanation if active orders are found.
+    - CA6: record is preserved in DB (soft delete); historical orders kept.
+    """
+    service = db.query(Service).filter(Service.id == service_id).first()
+    if not service:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Servicio no encontrado.")
+
+    if service.user_id != current_user_id:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="No tienes permisos para eliminar este servicio.",
+        )
+
+    # CA4/CA5 — block deletion if active orders exist
+    active_orders = (
+        db.query(Order)
+        .filter(
+            Order.service_id == service_id,
+            Order.estado.notin_(["completado", "cancelado"]),
+        )
+        .count()
+    )
+    if active_orders > 0:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=(
+                "No puedes eliminar este servicio porque tiene pedidos activos. "
+                "Espera a que todos los pedidos finalicen antes de eliminar el servicio."
+            ),
+        )
+
+    # CA6 — soft delete (preserves record and historical orders)
+    service.estado = "eliminado"
+    db.commit()
+
+
 def update_service(
     db: Session,
     service_id: int,
