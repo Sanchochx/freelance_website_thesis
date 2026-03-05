@@ -7,12 +7,12 @@
 │  PROGRESO GLOBAL DEL PROYECTO                               │
 ├─────────────────────────────────────────────────────────────┤
 │  Total Historias de Usuario:     50                         │
-│  ✅ Completadas:                   9                       │
+│  ✅ Completadas:                  10                       │
 │  🔄 Parcialmente Completadas:     0                         │
 │  ⏳ En Progreso:                   0                         │
-│  ⏸️  Pendientes:                   41                        │
+│  ⏸️  Pendientes:                   40                        │
 │                                                             │
-│  Progreso: [█████████░░░░░░░░░░░░░] 18% (9/50)             │
+│  Progreso: [██████████░░░░░░░░░░░░] 20% (10/50)            │
 └─────────────────────────────────────────────────────────────┘
 ```
 
@@ -27,7 +27,7 @@
 | Epic | Nombre | US | SP | ✅ | 🔄 | ⏳ |
 |------|--------|----|----|----|----|-----|
 | EPIC_01 | Autenticación y Perfiles | 8 | 28 | 8 | 0 | 0 |
-| EPIC_02 | Catálogo de Servicios | 6 | 19 | 1 | 0 | 5 |
+| EPIC_02 | Catálogo de Servicios | 6 | 19 | 2 | 0 | 4 |
 | EPIC_03 | Sistema de Pedidos | 6 | 24 | 0 | 0 | 6 |
 | EPIC_04 | Mensajería Interna | 5 | 20 | 0 | 0 | 5 |
 | EPIC_05 | Reseñas y Calificaciones | 4 | 12 | 0 | 0 | 4 |
@@ -35,7 +35,7 @@
 | EPIC_07 | Búsqueda y Filtros | 4 | 14 | 0 | 0 | 4 |
 | EPIC_08 | Dashboard y Analítica | 5 | 21 | 0 | 0 | 5 |
 | EPIC_09 | Notificaciones | 5 | 19 | 0 | 0 | 5 |
-| **TOTAL** | | **50** | **186** | **9** | **0** | **41** |
+| **TOTAL** | | **50** | **186** | **10** | **0** | **40** |
 
 ---
 
@@ -119,13 +119,13 @@
 - **Criterios de Aceptación:** 8 ✅
 - **Fecha de completación:** 2026-03-05
 
-#### [ ] US-010: Editar servicio
+#### [x] US-010: Editar servicio
 - **Archivo:** `context/USER_STORIES/EPIC_02_Catalogo_de_Servicios/US-010_editar_servicio.md`
 - **Prioridad:** MEDIA
 - **Estimación:** 3 pts
-- **Estado:** ⏳ Pendiente
-- **Criterios de Aceptación:** 6 ⏳
-- **Fecha de completación:** —
+- **Estado:** ✅ Completada
+- **Criterios de Aceptación:** 6 ✅
+- **Fecha de completación:** 2026-03-05
 
 #### [ ] US-011: Pausar o eliminar servicio
 - **Archivo:** `context/USER_STORIES/EPIC_02_Catalogo_de_Servicios/US-011_pausar_eliminar_servicio.md`

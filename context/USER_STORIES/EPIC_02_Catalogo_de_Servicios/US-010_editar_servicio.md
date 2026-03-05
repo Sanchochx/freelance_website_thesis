@@ -8,12 +8,12 @@
 
 ## Criterios de Aceptación
 
-- [ ] **CA1:** Solo el freelancer propietario del servicio puede editarlo.
-- [ ] **CA2:** Se pueden editar todos los campos: título, descripción, categoría, imágenes, paquetes y tiempo de entrega.
-- [ ] **CA3:** Los cambios se reflejan inmediatamente en el catálogo público.
-- [ ] **CA4:** No se puede editar un servicio que tiene pedidos en estado `en progreso`; se muestra un mensaje informativo.
-- [ ] **CA5:** Al agregar nuevas imágenes, las anteriores pueden mantenerse o eliminarse individualmente.
-- [ ] **CA6:** Al editar los precios de los paquetes, los pedidos existentes no se ven afectados (conservan el precio al momento de la contratación).
+- [x] **CA1:** Solo el freelancer propietario del servicio puede editarlo.
+- [x] **CA2:** Se pueden editar todos los campos: título, descripción, categoría, imágenes, paquetes y tiempo de entrega.
+- [x] **CA3:** Los cambios se reflejan inmediatamente en el catálogo público.
+- [x] **CA4:** No se puede editar un servicio que tiene pedidos en estado `en progreso`; se muestra un mensaje informativo.
+- [x] **CA5:** Al agregar nuevas imágenes, las anteriores pueden mantenerse o eliminarse individualmente.
+- [x] **CA6:** Al editar los precios de los paquetes, los pedidos existentes no se ven afectados (conservan el precio al momento de la contratación).
 
 ## Notas Técnicas
 

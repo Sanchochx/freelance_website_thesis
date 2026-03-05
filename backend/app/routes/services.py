@@ -4,7 +4,7 @@ from fastapi import APIRouter, Depends, File, Form, HTTPException, UploadFile, s
 from sqlalchemy.orm import Session
 
 from app.database import get_db
-from app.middleware.auth import require_verified_freelancer
+from app.middleware.auth import get_current_user, require_verified_freelancer
 from app.models.user import User
 from app.schemas.service import ServiceResponse
 from app.services import service_service
@@ -69,6 +69,65 @@ async def create_service(
         imagen_urls=imagen_urls,
     )
 
+    return _build_response(service)
+
+
+@router.put(
+    "/{service_id}",
+    response_model=ServiceResponse,
+    status_code=status.HTTP_200_OK,
+    summary="Editar un servicio existente",
+)
+async def update_service(
+    service_id: int,
+    titulo: Optional[str] = Form(None, max_length=100),
+    descripcion: Optional[str] = Form(None, max_length=1200),
+    categoria_id: Optional[int] = Form(None),
+    precio_basico: Optional[float] = Form(None, gt=0),
+    precio_estandar: Optional[float] = Form(None, gt=0),
+    precio_premium: Optional[float] = Form(None, gt=0),
+    tiempo_entrega: Optional[int] = Form(None, ge=1),
+    keep_images: Optional[List[str]] = Form(None),
+    new_images: Optional[List[UploadFile]] = File(None),
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_db),
+):
+    """
+    Edita un servicio existente del freelancer autenticado.
+
+    - CA1: solo el propietario del servicio puede editarlo
+    - CA2: todos los campos son opcionales; solo los enviados se actualizan
+    - CA3: los cambios se reflejan de inmediato en el catálogo
+    - CA4: se bloquea si hay pedidos en estado 'en_progreso'
+    - CA5: keep_images = URLs a conservar; new_images = archivos nuevos a subir
+    - CA6: los pedidos existentes no se ven afectados por cambios de precio
+    """
+    # CA5 — upload new images if provided
+    new_image_urls = []
+    if new_images:
+        for img in new_images:
+            url = await upload_service_image(img)
+            new_image_urls.append(url)
+
+    service = service_service.update_service(
+        db=db,
+        service_id=service_id,
+        current_user_id=current_user.id,
+        titulo=titulo,
+        descripcion=descripcion,
+        categoria_id=categoria_id,
+        precio_basico=precio_basico,
+        precio_estandar=precio_estandar,
+        precio_premium=precio_premium,
+        tiempo_entrega=tiempo_entrega,
+        keep_images=keep_images,
+        new_image_urls=new_image_urls if new_image_urls else None,
+    )
+
+    return _build_response(service)
+
+
+def _build_response(service) -> ServiceResponse:
     return ServiceResponse(
         id=service.id,
         user_id=service.user_id,

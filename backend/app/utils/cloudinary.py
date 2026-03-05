@@ -47,6 +47,26 @@ async def upload_avatar(file: UploadFile) -> str:
     return result["secure_url"]
 
 
+def delete_cloudinary_image(secure_url: str) -> None:
+    """
+    Delete an image from Cloudinary by extracting its public_id from the secure_url.
+
+    CA5: removes old service images when they are replaced or removed.
+    """
+    # Extract public_id from URL: .../upload/v{version}/{public_id}.{ext}
+    try:
+        upload_index = secure_url.index("/upload/")
+        after_upload = secure_url[upload_index + len("/upload/"):]
+        # Remove version segment (v123456/) if present
+        if after_upload.startswith("v") and "/" in after_upload:
+            after_upload = after_upload.split("/", 1)[1]
+        # Remove extension
+        public_id = after_upload.rsplit(".", 1)[0]
+        cloudinary.uploader.destroy(public_id, resource_type="image")
+    except (ValueError, IndexError):
+        pass  # If URL parsing fails, skip deletion silently
+
+
 async def upload_service_image(file: UploadFile) -> str:
     """
     Upload a service image to Cloudinary and return the secure_url.
