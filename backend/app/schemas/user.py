@@ -147,3 +147,29 @@ class FreelancerProfileResponse(BaseModel):
     total_reviews: int
     services: List[ServiceSummary]
     reviews: List[ReviewSummary]
+
+
+class OrderHistoryItem(BaseModel):
+    """Completed order summary for a client profile — CA2 (no montos)."""
+
+    id: int
+    service_titulo: Optional[str] = None
+    freelancer_nombre: str
+    estado: str
+    fecha_creacion: str  # ISO-8601
+
+
+class ClientProfileResponse(BaseModel):
+    """Public profile for a client — US-006. No email or wallet_balance (CA6)."""
+
+    id: int
+    nombre: str
+    empresa: Optional[str] = None  # CA1
+    avatar_url: Optional[str] = None
+    fecha_registro: str  # ISO-8601 — CA1
+    avg_rating: Optional[float] = None  # avg as client — CA1
+    total_reviews: int
+    total_contratados: int   # CA4
+    total_completados: int   # CA4
+    pedidos_completados: List[OrderHistoryItem]  # CA2
+    reviews: List[ReviewSummary]  # CA3

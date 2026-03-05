@@ -8,12 +8,12 @@
 
 ## Criterios de Aceptación
 
-- [ ] **CA1:** El perfil muestra: foto de perfil, nombre, empresa (si aplica), fecha de registro y calificación promedio como cliente.
-- [ ] **CA2:** El historial de contrataciones muestra los pedidos completados (sin revelar montos pagados).
-- [ ] **CA3:** Las reseñas recibidas de freelancers se muestran en el perfil.
-- [ ] **CA4:** El número total de servicios contratados y completados es visible en el perfil.
-- [ ] **CA5:** El perfil del cliente es visible para los freelancers cuando reciben un pedido de ese cliente.
-- [ ] **CA6:** Los datos sensibles (correo, wallet balance) no se exponen en el perfil público.
+- [x] **CA1:** El perfil muestra: foto de perfil, nombre, empresa (si aplica), fecha de registro y calificación promedio como cliente.
+- [x] **CA2:** El historial de contrataciones muestra los pedidos completados (sin revelar montos pagados).
+- [x] **CA3:** Las reseñas recibidas de freelancers se muestran en el perfil.
+- [x] **CA4:** El número total de servicios contratados y completados es visible en el perfil.
+- [x] **CA5:** El perfil del cliente es visible para los freelancers cuando reciben un pedido de ese cliente.
+- [x] **CA6:** Los datos sensibles (correo, wallet balance) no se exponen en el perfil público.
 
 ## Notas Técnicas
 
