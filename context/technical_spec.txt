@@ -1,0 +1,206 @@
+=====================================================================
+  ESPECIFICACIÓN TÉCNICA — MARKETPLACE FREELANCE UNIVERSITARIO
+=====================================================================
+
+-------------------------------
+  DESCRIPCIÓN DEL SISTEMA
+-------------------------------
+Plataforma web fullstack de servicios freelance orientada a la comunidad
+universitaria. Los estudiantes verificados ofrecen servicios profesionales
+y clientes externos (empresas y personas naturales) los contratan.
+
+-------------------------------
+  ROLES Y ACTORES
+-------------------------------
+1. Estudiante Freelancer
+   - Registro con correo institucional (@usantoto.edu.co)
+   - Puede publicar y gestionar servicios
+   - Recibe pedidos, se comunica con clientes y cobra por trabajos
+
+2. Cliente Externo (Empresa / Persona Natural)
+   - Registro con correo personal o empresarial
+   - Solo puede buscar y contratar servicios
+   - No puede publicar servicios
+
+3. Estudiante Cliente
+   - Mismo registro que el freelancer
+   - Puede contratar servicios a otros estudiantes
+
+4. Administrador
+   - Acceso total a la plataforma
+   - Modera usuarios, servicios y transacciones
+   - Gestiona reportes y estadísticas globales
+
+-------------------------------
+  MÓDULOS DEL SISTEMA
+-------------------------------
+
+MÓDULO 1 — AUTENTICACIÓN Y PERFILES
+  - Registro diferenciado: estudiante (correo institucional) y cliente externo
+  - Login con JWT + bcrypt
+  - Verificación de correo al registrarse
+  - Perfil de freelancer: foto, nombre, carrera, semestre, bio, habilidades, portafolio, calificación promedio
+  - Perfil de cliente: foto, nombre, empresa (opcional), historial de contrataciones
+  - Edición de perfil
+  - Recuperación de contraseña
+
+MÓDULO 2 — CATÁLOGO DE SERVICIOS (GIGS)
+  - Crear, editar, pausar y eliminar servicios
+  - Campos: título, descripción, categoría, precio base, paquetes (básico/estándar/premium), tiempo de entrega, imágenes de ejemplo
+  - Estado del servicio: activo / pausado / agotado
+  - Vista pública del servicio con detalle completo
+  - Categorías disponibles:
+      * Programación y Tecnología
+      * Diseño Gráfico y UI/UX
+      * Redacción y Traducción
+      * Análisis de Datos y Excel
+      * Video y Multimedia
+      * Ingeniería y CAD
+      * Tutorías Académicas
+      * Marketing Digital y Redes
+
+MÓDULO 3 — SISTEMA DE PEDIDOS
+  - El cliente selecciona un paquete y realiza el pedido
+  - Ciclo de vida del pedido: Pendiente → En progreso → En revisión → Completado / Cancelado
+  - El freelancer acepta o rechaza el pedido
+  - Solicitud de revisiones por parte del cliente
+  - Entrega de archivos dentro del pedido
+  - Historial de pedidos para ambas partes
+
+MÓDULO 4 — MENSAJERÍA INTERNA
+  - Chat en tiempo real por pedido (WebSockets)
+  - Historial de mensajes persistente
+  - Envío de archivos adjuntos dentro del chat
+  - Notificación de mensajes no leídos
+  - Chat previo al pedido (consulta antes de contratar)
+
+MÓDULO 5 — RESEÑAS Y CALIFICACIONES
+  - Al completarse un pedido, ambas partes se califican (1 a 5 estrellas)
+  - Comentario escrito opcional
+  - Calificación promedio visible en el perfil del freelancer
+  - El puntaje impacta el ranking en búsquedas
+  - Badges automáticos: Top Freelancer, Entrega Rápida, Alta Calidad
+
+MÓDULO 6 — PAGOS Y WALLET
+  - Wallet virtual por usuario en pesos colombianos (COP)
+  - Flujo de pago: cliente paga al crear pedido → dinero queda en escrow → se libera al freelancer al completarse
+  - Integración con MercadoPago en modo Sandbox (entorno de pruebas, sin dinero real)
+  - Las credenciales utilizadas son las de prueba proporcionadas por MercadoPago (ACCESS_TOKEN de test)
+  - Se usan tarjetas y usuarios de prueba para simular todas las transacciones
+  - Comisión de plataforma: 10% por transacción completada
+  - Historial de transacciones descargable
+  - Reembolso automático si el pedido es cancelado antes de iniciarse
+
+MÓDULO 7 — BÚSQUEDA Y FILTROS
+  - Búsqueda por palabra clave
+  - Filtros: categoría, precio mínimo/máximo, calificación mínima, tiempo de entrega
+  - Ordenar por: más relevante, mejor calificado, precio menor a mayor, más vendido
+  - Sección de servicios destacados en la página principal
+
+MÓDULO 8 — DASHBOARD Y ANALÍTICA
+  Vista Freelancer:
+    - Ingresos del mes y acumulados
+    - Pedidos activos, completados y cancelados
+    - Tasa de completado
+    - Gráfica de rendimiento histórico
+    - Reseñas recientes y mensajes pendientes
+
+  Vista Administrador:
+    - Total de usuarios registrados (freelancers y clientes)
+    - Total de servicios publicados por categoría
+    - Volumen de transacciones del mes
+    - Pedidos activos en la plataforma
+    - Usuarios y servicios reportados pendientes de revisión
+
+MÓDULO 9 — NOTIFICACIONES
+  - Email al freelancer cuando recibe un nuevo pedido
+  - Email al cliente cuando el pedido cambia de estado
+  - Alerta en la plataforma cuando llega un mensaje nuevo
+  - Recordatorio por email si un pedido lleva más de 3 días sin respuesta
+  - Notificación cuando se libera el pago al freelancer
+
+-------------------------------
+  STACK TECNOLÓGICO
+-------------------------------
+
+FRONTEND
+  - Framework:      React 19
+  - Estilos:        Tailwind CSS
+  - Routing:        React Router v6
+  - Estado global:  Zustand o Context API
+  - HTTP client:    Axios
+  - Tiempo real:    Socket.io-client
+  - Charts:         Recharts
+
+BACKEND
+  - Framework:      FastAPI (Python) — opción alternativa: Flask
+  - ORM:            SQLAlchemy
+  - Autenticación:  JWT (PyJWT) + bcrypt (passlib)
+  - Tiempo real:    WebSockets (FastAPI WebSocket / Socket.io)
+  - Email:          FastAPI-Mail o Flask-Mail
+  - Pagos:          MercadoPago SDK Python
+
+BASE DE DATOS
+  - Motor:          PostgreSQL
+  - Migraciones:    Alembic
+
+ALMACENAMIENTO
+  - Archivos e imágenes: Cloudinary
+
+DEPLOY
+  - Backend:        Railway
+  - Frontend:       Vercel
+  - Base de datos:  Railway PostgreSQL (o Supabase)
+
+-------------------------------
+  MODELO DE BASE DE DATOS
+-------------------------------
+
+users
+  id, nombre, email, password_hash, rol (freelancer / client / admin),
+  carrera, semestre, avatar_url, bio, wallet_balance, verificado,
+  fecha_registro
+
+services
+  id, user_id (FK users), titulo, descripcion, categoria_id (FK),
+  precio_basico, precio_estandar, precio_premium, tiempo_entrega,
+  estado (activo/pausado/agotado), fecha_creacion
+
+categories
+  id, nombre, icono
+
+orders
+  id, service_id (FK), client_id (FK users), freelancer_id (FK users),
+  paquete (basico/estandar/premium), estado, precio, escrow_retenido,
+  fecha_creacion, fecha_completado
+
+messages
+  id, order_id (FK), sender_id (FK users), contenido, archivo_url,
+  leido, timestamp
+
+reviews
+  id, order_id (FK), reviewer_id (FK users), reviewed_id (FK users),
+  rating (1-5), comentario, fecha
+
+transactions
+  id, user_id (FK users), order_id (FK, nullable), tipo
+  (recarga/pago/cobro/retiro/comision/reembolso), monto, estado, fecha
+
+notifications
+  id, user_id (FK users), tipo, mensaje, leido, fecha
+
+-------------------------------
+  REGLAS DE NEGOCIO CLAVE
+-------------------------------
+- Solo usuarios con correo institucional verificado pueden publicar servicios
+- El dinero queda retenido en escrow hasta que el pedido se marca como completado
+- La comisión del 10% se descuenta automáticamente al liberar el pago
+- Un freelancer no puede contratarse a sí mismo
+- Solo se puede dejar reseña si el pedido está en estado Completado
+- Un pedido cancelado antes de iniciarse genera reembolso total al cliente
+- Los badges se asignan automáticamente según métricas del freelancer
+
+=====================================================================
+  Archivo de contexto técnico para generación de historias de usuario
+  Marketplace Freelance Universitario — USTA Tunja 2026
+=====================================================================
