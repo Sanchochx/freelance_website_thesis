@@ -54,6 +54,7 @@ Para cada criterio de aceptación:
 
 **Ejemplo de progreso en archivo de US:**
 ```markdown
+
 ## Criterios de Aceptación
 
 - [x] El sistema debe permitir registro con email y contraseña

@@ -8,14 +8,14 @@
 
 ## Criterios de Aceptación
 
-- [ ] **CA1:** El formulario de login solicita correo electrónico y contraseña.
-- [ ] **CA2:** Si las credenciales son correctas, el sistema devuelve un JWT válido.
-- [ ] **CA3:** El JWT contiene el `user_id`, `rol` y tiempo de expiración (24 horas).
-- [ ] **CA4:** Si el correo o la contraseña son incorrectos, el sistema devuelve un error genérico sin especificar cuál campo es incorrecto.
-- [ ] **CA5:** Si la cuenta no está verificada, el sistema informa al usuario y le ofrece reenviar el correo de verificación.
-- [ ] **CA6:** El token se almacena en el cliente de forma segura (httpOnly cookie o localStorage según configuración).
-- [ ] **CA7:** Las rutas protegidas rechazan requests sin token válido con error 401.
-- [ ] **CA8:** El sistema soporta cierre de sesión invalidando el token en el cliente.
+- [x] **CA1:** El formulario de login solicita correo electrónico y contraseña.
+- [x] **CA2:** Si las credenciales son correctas, el sistema devuelve un JWT válido.
+- [x] **CA3:** El JWT contiene el `user_id`, `rol` y tiempo de expiración (24 horas).
+- [x] **CA4:** Si el correo o la contraseña son incorrectos, el sistema devuelve un error genérico sin especificar cuál campo es incorrecto.
+- [x] **CA5:** Si la cuenta no está verificada, el sistema informa al usuario y le ofrece reenviar el correo de verificación.
+- [x] **CA6:** El token se almacena en el cliente de forma segura (httpOnly cookie o localStorage según configuración).
+- [x] **CA7:** Las rutas protegidas rechazan requests sin token válido con error 401.
+- [x] **CA8:** El sistema soporta cierre de sesión invalidando el token en el cliente.
 
 ## Notas Técnicas
 

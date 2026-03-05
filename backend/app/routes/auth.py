@@ -2,11 +2,51 @@ from fastapi import APIRouter, BackgroundTasks, Depends, status
 from sqlalchemy.orm import Session
 
 from app.database import get_db
-from app.schemas.user import ClientRegisterRequest, FreelancerRegisterRequest, UserResponse
+from app.schemas.user import (
+    ClientRegisterRequest,
+    FreelancerRegisterRequest,
+    LoginRequest,
+    LoginResponse,
+    UserResponse,
+)
 from app.services import auth_service
 from app.utils.email import send_verification_email
 
 router = APIRouter(prefix="/auth", tags=["auth"])
+
+
+@router.post(
+    "/login",
+    response_model=LoginResponse,
+    summary="Inicio de sesión con JWT",
+)
+def login(data: LoginRequest, db: Session = Depends(get_db)):
+    """
+    Autentica al usuario y devuelve un JWT Bearer token.
+
+    - CA1: recibe email y contraseña
+    - CA2: devuelve token JWT válido si las credenciales son correctas
+    - CA3: payload del JWT incluye user_id, rol y expiración a 24 horas
+    - CA4: error 401 genérico si email o contraseña son incorrectos
+    - CA5: error 403 con mensaje informativo si la cuenta no está verificada
+    - CA6: el token se devuelve en el body; el cliente lo almacena en localStorage
+    """
+    return auth_service.login(db, data)
+
+
+@router.post(
+    "/logout",
+    status_code=status.HTTP_200_OK,
+    summary="Cierre de sesión",
+)
+def logout():
+    """
+    Cierre de sesión.
+
+    - CA8: el token es stateless (JWT); el cliente debe eliminarlo de localStorage.
+    Este endpoint confirma la intención de logout sin requerir autenticación.
+    """
+    return {"success": True, "message": "Sesión cerrada correctamente"}
 
 
 @router.post(

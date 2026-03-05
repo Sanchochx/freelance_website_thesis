@@ -79,3 +79,18 @@ class UserResponse(BaseModel):
     bio: Optional[str] = None
 
     model_config = {"from_attributes": True}
+
+
+class LoginRequest(BaseModel):
+    """Schema for login — CA1: email and password fields."""
+
+    email: EmailStr
+    password: str
+
+
+class LoginResponse(BaseModel):
+    """Schema for successful login response — CA2, CA3."""
+
+    access_token: str
+    token_type: str = "bearer"
+    user: UserResponse

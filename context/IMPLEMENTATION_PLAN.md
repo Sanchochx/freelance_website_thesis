@@ -7,12 +7,12 @@
 │  PROGRESO GLOBAL DEL PROYECTO                               │
 ├─────────────────────────────────────────────────────────────┤
 │  Total Historias de Usuario:     50                         │
-│  ✅ Completadas:                   2                       │
+│  ✅ Completadas:                   3                       │
 │  🔄 Parcialmente Completadas:     0                         │
 │  ⏳ En Progreso:                   0                         │
-│  ⏸️  Pendientes:                   48                        │
+│  ⏸️  Pendientes:                   47                        │
 │                                                             │
-│  Progreso: [██░░░░░░░░░░░░░░░░░░░░] 4% (2/50)              │
+│  Progreso: [███░░░░░░░░░░░░░░░░░░░] 6% (3/50)              │
 └─────────────────────────────────────────────────────────────┘
 ```
 
@@ -26,7 +26,7 @@
 
 | Epic | Nombre | US | SP | ✅ | 🔄 | ⏳ |
 |------|--------|----|----|----|----|-----|
-| EPIC_01 | Autenticación y Perfiles | 8 | 28 | 2 | 0 | 6 |
+| EPIC_01 | Autenticación y Perfiles | 8 | 28 | 3 | 0 | 5 |
 | EPIC_02 | Catálogo de Servicios | 6 | 19 | 0 | 0 | 6 |
 | EPIC_03 | Sistema de Pedidos | 6 | 24 | 0 | 0 | 6 |
 | EPIC_04 | Mensajería Interna | 5 | 20 | 0 | 0 | 5 |
@@ -35,7 +35,7 @@
 | EPIC_07 | Búsqueda y Filtros | 4 | 14 | 0 | 0 | 4 |
 | EPIC_08 | Dashboard y Analítica | 5 | 21 | 0 | 0 | 5 |
 | EPIC_09 | Notificaciones | 5 | 19 | 0 | 0 | 5 |
-| **TOTAL** | | **50** | **186** | **2** | **0** | **48** |
+| **TOTAL** | | **50** | **186** | **3** | **0** | **47** |
 
 ---
 
@@ -59,13 +59,13 @@
 - **Criterios de Aceptación:** 8 ✅
 - **Fecha de completación:** 2026-03-05
 
-#### [ ] US-003: Login con JWT
+#### [x] US-003: Login con JWT
 - **Archivo:** `context/USER_STORIES/EPIC_01_Autenticacion_y_Perfiles/US-003_login_con_jwt.md`
 - **Prioridad:** ALTA
 - **Estimación:** 3 pts
-- **Estado:** ⏳ Pendiente
-- **Criterios de Aceptación:** 8 ⏳
-- **Fecha de completación:** —
+- **Estado:** ✅ Completada
+- **Criterios de Aceptación:** 8 ✅
+- **Fecha de completación:** 2026-03-05
 
 #### [ ] US-004: Verificación de correo
 - **Archivo:** `context/USER_STORIES/EPIC_01_Autenticacion_y_Perfiles/US-004_verificacion_de_correo.md`
