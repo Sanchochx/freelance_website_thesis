@@ -8,13 +8,13 @@
 
 ## Criterios de Aceptación
 
-- [ ] **CA1:** El freelancer puede editar: foto de perfil, bio, habilidades, portafolio (agregar/quitar imágenes o links).
-- [ ] **CA2:** El cliente puede editar: foto de perfil, nombre y empresa.
-- [ ] **CA3:** El correo electrónico no se puede cambiar directamente; requiere un flujo separado de cambio de correo con verificación.
-- [ ] **CA4:** La foto de perfil se sube a Cloudinary y se almacena la URL resultante.
-- [ ] **CA5:** Los cambios se guardan inmediatamente y se reflejan en el perfil público.
-- [ ] **CA6:** Si la foto sube falla (tamaño > 5 MB o formato no soportado), se muestra un error descriptivo.
-- [ ] **CA7:** Solo el propio usuario puede editar su perfil (verificación por JWT).
+- [x] **CA1:** El freelancer puede editar: foto de perfil, bio, habilidades, portafolio (agregar/quitar imágenes o links).
+- [x] **CA2:** El cliente puede editar: foto de perfil, nombre y empresa.
+- [x] **CA3:** El correo electrónico no se puede cambiar directamente; requiere un flujo separado de cambio de correo con verificación.
+- [x] **CA4:** La foto de perfil se sube a Cloudinary y se almacena la URL resultante.
+- [x] **CA5:** Los cambios se guardan inmediatamente y se reflejan en el perfil público.
+- [x] **CA6:** Si la foto sube falla (tamaño > 5 MB o formato no soportado), se muestra un error descriptivo.
+- [x] **CA7:** Solo el propio usuario puede editar su perfil (verificación por JWT).
 
 ## Notas Técnicas
 

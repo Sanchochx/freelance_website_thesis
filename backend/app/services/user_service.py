@@ -6,6 +6,7 @@ from app.models.order import Order
 from app.models.review import Review
 from app.models.service import Service
 from app.models.user import User
+from app.schemas.user import FreelancerProfileUpdateRequest, ClientProfileUpdateRequest
 
 
 def get_freelancer_profile(db: Session, user_id: int) -> dict:
@@ -89,6 +90,64 @@ def get_freelancer_profile(db: Session, user_id: int) -> dict:
             for r in reviews_raw
         ],
     }
+
+
+def update_avatar_url(db: Session, user_id: int, avatar_url: str) -> User:
+    """Persist the new avatar URL after a successful Cloudinary upload (CA4, CA5)."""
+    user = db.query(User).filter(User.id == user_id).first()
+    if user is None:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Usuario no encontrado",
+        )
+    user.avatar_url = avatar_url
+    db.commit()
+    db.refresh(user)
+    return user
+
+
+def update_freelancer_profile(
+    db: Session, user_id: int, data: FreelancerProfileUpdateRequest
+) -> User:
+    """Update editable freelancer fields (CA1). Email cannot be changed (CA3)."""
+    user = db.query(User).filter(User.id == user_id, User.rol == "freelancer").first()
+    if user is None:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Freelancer no encontrado",
+        )
+
+    if data.bio is not None:
+        user.bio = data.bio
+    if data.habilidades is not None:
+        user.habilidades = data.habilidades
+    if data.portafolio is not None:
+        user.portafolio = data.portafolio
+
+    db.commit()
+    db.refresh(user)
+    return user
+
+
+def update_client_profile(
+    db: Session, user_id: int, data: ClientProfileUpdateRequest
+) -> User:
+    """Update editable client fields (CA2). Email cannot be changed (CA3)."""
+    user = db.query(User).filter(User.id == user_id, User.rol == "client").first()
+    if user is None:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Cliente no encontrado",
+        )
+
+    if data.nombre is not None:
+        user.nombre = data.nombre
+    if data.empresa is not None:
+        user.empresa = data.empresa
+
+    db.commit()
+    db.refresh(user)
+    return user
 
 
 def get_client_profile(db: Session, user_id: int) -> dict:

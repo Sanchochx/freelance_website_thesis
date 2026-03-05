@@ -173,3 +173,28 @@ class ClientProfileResponse(BaseModel):
     total_completados: int   # CA4
     pedidos_completados: List[OrderHistoryItem]  # CA2
     reviews: List[ReviewSummary]  # CA3
+
+
+# ── US-007: Profile editing schemas ──────────────────────────────────────────
+
+class FreelancerProfileUpdateRequest(BaseModel):
+    """Fields a freelancer can edit — CA1. Email excluded (CA3)."""
+
+    bio: Optional[str] = Field(None, max_length=500)
+    habilidades: Optional[List[str]] = None
+    portafolio: Optional[List[str]] = None
+
+
+class ClientProfileUpdateRequest(BaseModel):
+    """Fields a client can edit — CA2. Email excluded (CA3)."""
+
+    nombre: Optional[str] = Field(None, min_length=2, max_length=100)
+    empresa: Optional[str] = Field(None, max_length=150)
+
+
+class ProfileUpdateResponse(BaseModel):
+    """Response after a successful profile update — CA5."""
+
+    success: bool = True
+    message: str = "Perfil actualizado correctamente"
+    data: UserResponse
