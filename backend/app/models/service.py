@@ -17,7 +17,7 @@ class Service(Base):
     precio_premium = Column(Numeric(10, 2), nullable=True)
     tiempo_entrega = Column(Integer, nullable=True)  # days
     imagenes = Column(ARRAY(String), nullable=True)
-    categoria_id = Column(Integer, nullable=True)  # no FK — categories table doesn't exist yet
+    categoria_id = Column(Integer, ForeignKey("categories.id"), nullable=True)
     estado = Column(String(20), nullable=False, default="activo")  # 'activo' | 'inactivo'
     fecha_creacion = Column(DateTime(timezone=True), server_default=func.now())
 

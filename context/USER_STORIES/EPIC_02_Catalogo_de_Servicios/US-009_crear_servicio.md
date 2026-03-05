@@ -8,14 +8,14 @@
 
 ## Criterios de Aceptación
 
-- [ ] **CA1:** Solo usuarios con rol `freelancer` y cuenta verificada pueden crear servicios.
-- [ ] **CA2:** El formulario solicita: título, descripción, categoría, imágenes de ejemplo (mínimo 1, máximo 5), tiempo de entrega y al menos un paquete de precio.
-- [ ] **CA3:** El título tiene un máximo de 100 caracteres; la descripción un máximo de 1200 caracteres.
-- [ ] **CA4:** El servicio se crea en estado `activo` por defecto.
-- [ ] **CA5:** Las imágenes se suben a Cloudinary y se almacenan sus URLs.
-- [ ] **CA6:** La categoría debe pertenecer a las 8 categorías disponibles del sistema.
-- [ ] **CA7:** El servicio recién creado aparece en el catálogo público inmediatamente.
-- [ ] **CA8:** Un freelancer no puede crear más de 10 servicios activos simultáneamente.
+- [x] **CA1:** Solo usuarios con rol `freelancer` y cuenta verificada pueden crear servicios.
+- [x] **CA2:** El formulario solicita: título, descripción, categoría, imágenes de ejemplo (mínimo 1, máximo 5), tiempo de entrega y al menos un paquete de precio.
+- [x] **CA3:** El título tiene un máximo de 100 caracteres; la descripción un máximo de 1200 caracteres.
+- [x] **CA4:** El servicio se crea en estado `activo` por defecto.
+- [x] **CA5:** Las imágenes se suben a Cloudinary y se almacenan sus URLs.
+- [x] **CA6:** La categoría debe pertenecer a las 8 categorías disponibles del sistema.
+- [x] **CA7:** El servicio recién creado aparece en el catálogo público inmediatamente.
+- [x] **CA8:** Un freelancer no puede crear más de 10 servicios activos simultáneamente.
 
 ## Notas Técnicas
 

@@ -45,3 +45,32 @@ async def upload_avatar(file: UploadFile) -> str:
     )
 
     return result["secure_url"]
+
+
+async def upload_service_image(file: UploadFile) -> str:
+    """
+    Upload a service image to Cloudinary and return the secure_url.
+
+    CA5: stores the resulting Cloudinary URL in services.imagenes.
+    Validates MIME type and file size (max 5 MB).
+    """
+    if file.content_type not in ALLOWED_MIME_TYPES:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Formato de imagen no soportado. Solo se aceptan JPG, PNG y WEBP.",
+        )
+
+    contents = await file.read()
+    if len(contents) > MAX_FILE_SIZE_BYTES:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="La imagen supera el tamaño máximo permitido de 5 MB.",
+        )
+
+    result = cloudinary.uploader.upload(
+        contents,
+        folder="freelanceusta/services",
+        resource_type="image",
+    )
+
+    return result["secure_url"]
