@@ -14,6 +14,7 @@ class User(Base):
     rol = Column(String(20), nullable=False)  # 'freelancer' | 'client' | 'admin'
     carrera = Column(String(100), nullable=True)
     semestre = Column(Integer, nullable=True)
+    empresa = Column(String(150), nullable=True)  # solo clientes externos
     avatar_url = Column(String(255), nullable=True)
     bio = Column(Text, nullable=True)
     habilidades = Column(ARRAY(String), nullable=True)

@@ -8,14 +8,14 @@
 
 ## Criterios de Aceptación
 
-- [ ] **CA1:** El formulario de registro solicita: nombre completo, correo (personal o empresarial), contraseña y —opcionalmente— nombre de empresa.
-- [ ] **CA2:** El sistema acepta cualquier dominio de correo válido (no institucional).
-- [ ] **CA3:** La contraseña debe tener mínimo 8 caracteres, al menos una mayúscula y un número.
-- [ ] **CA4:** Al completar el registro, el sistema envía un correo de verificación.
-- [ ] **CA5:** La cuenta queda en estado `no verificado` hasta que el usuario confirme su correo.
-- [ ] **CA6:** El rol asignado automáticamente es `client`.
-- [ ] **CA7:** Un cliente externo no puede publicar servicios; si intenta hacerlo, recibe un error 403.
-- [ ] **CA8:** No se permite registrar el mismo correo dos veces.
+- [x] **CA1:** El formulario de registro solicita: nombre completo, correo (personal o empresarial), contraseña y —opcionalmente— nombre de empresa.
+- [x] **CA2:** El sistema acepta cualquier dominio de correo válido (no institucional).
+- [x] **CA3:** La contraseña debe tener mínimo 8 caracteres, al menos una mayúscula y un número.
+- [x] **CA4:** Al completar el registro, el sistema envía un correo de verificación.
+- [x] **CA5:** La cuenta queda en estado `no verificado` hasta que el usuario confirme su correo.
+- [x] **CA6:** El rol asignado automáticamente es `client`.
+- [x] **CA7:** Un cliente externo no puede publicar servicios; si intenta hacerlo, recibe un error 403.
+- [x] **CA8:** No se permite registrar el mismo correo dos veces.
 
 ## Notas Técnicas
 

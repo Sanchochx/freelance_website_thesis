@@ -44,6 +44,26 @@ class FreelancerRegisterRequest(BaseModel):
         return v
 
 
+class ClientRegisterRequest(BaseModel):
+    """Schema for external client registration — CA1–CA3, CA6."""
+
+    nombre: str = Field(..., min_length=2, max_length=100)
+    email: EmailStr
+    password: str = Field(..., min_length=8)
+    empresa: Optional[str] = Field(None, max_length=150)
+
+    @field_validator("password")
+    @classmethod
+    def validate_password_strength(cls, v: str) -> str:
+        """CA3: at least 8 chars, one uppercase, one digit."""
+        if not PASSWORD_REGEX.match(v):
+            raise ValueError(
+                "La contraseña debe tener mínimo 8 caracteres, "
+                "al menos una mayúscula y un número"
+            )
+        return v
+
+
 class UserResponse(BaseModel):
     """Public user data — never exposes password_hash."""
 
@@ -53,6 +73,7 @@ class UserResponse(BaseModel):
     rol: str
     carrera: Optional[str] = None
     semestre: Optional[int] = None
+    empresa: Optional[str] = None
     verificado: bool
     avatar_url: Optional[str] = None
     bio: Optional[str] = None
